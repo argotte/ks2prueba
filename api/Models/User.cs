@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
@@ -11,12 +12,15 @@ namespace api.Models
         [Column("Id")]
         public int Id { get; set; } // ESta es la llave primaria
 
+        [Required(ErrorMessage = "Name is required.")]
         [Column("Name")]
         public string Name { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Email is required.")]
         [Column("Email")]
         public string Email { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Password is required.")]
         [Column("Password")]
         public string Password { get; set; } = string.Empty;
 
