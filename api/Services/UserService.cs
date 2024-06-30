@@ -2,55 +2,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Services
 {
 
     public class UserService : IUserService
     {
-            private static List<User> users = new List<User>
+        //     private static List<User> users = new List<User>
+        // {
+        //     new User
+        //     {
+        //     Id = 3, Name = "User 1", Email = "asd@gmail.com",Password = "123456",
+        //         CreatedAt = DateTime.Now,UpdatedAt = DateTime.Now,
+        //     },
+        // };
+        private readonly AppDbContext _context;
+        public UserService(AppDbContext context)
         {
-            new User
-            {
-            Id = 3, Name = "User 1", Email = "asd@gmail.com",Password = "123456",
-                CreatedAt = DateTime.Now,UpdatedAt = DateTime.Now,
-            },
-        };
+            _context = context;
+        }
         public async Task<User> CreateUser(User user)
         {
-            users.Add(user);
-            return user;
+            var createdUser = await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return createdUser.Entity;
         }
 
-        public Task<bool>? DeleteUser(int id)
+        public async Task<bool>? DeleteUser(int id)
         {
-            var user = users.FirstOrDefault(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
             {
-                return null;    
+                return false;    
             }
-            users.Remove(user);
-            return Task.FromResult(true);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
+
         }
-        public Task<User> GetUser(int id)
+        public async Task<User> GetUser(int id)
         {
-            var user = users.FirstOrDefault(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
             {
                 return null;           
             }
-                return Task.FromResult(user);
+                return user;
             }
 
-        public Task<List<User>> GetUsers()
+        public async Task<List<User>> GetUsers()
         {
-            return Task.FromResult(users);
+            var users = await _context.Users.ToListAsync();
+            return users;
         }
 
-        public Task<User>? UpdateUser(int id, User user)
+        public async Task<User>? UpdateUser(int id, User user)
         {
-            var existingUser = users.FirstOrDefault(x => x.Id == id);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (existingUser == null)
             {
                 return null;
@@ -59,6 +70,7 @@ namespace api.Services
             existingUser.Email = user.Email;
             existingUser.Password = user.Password;
             existingUser.UpdatedAt = DateTime.Now;
-            return Task.FromResult(existingUser);}
+            return existingUser;
+            }
     }
 }

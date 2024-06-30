@@ -36,14 +36,14 @@ namespace api.Controllers
         [HttpPost]
         public async Task<ActionResult<List<User>>> CreateUser([FromBody] User user)
         {
-            var result = _userService.CreateUser(user);
+            var result = await _userService.CreateUser(user);
             return Ok(result);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<List<User>>> UpdateUser(int id, [FromBody] User user)
         {
-            var result = _userService.UpdateUser(id, user);
+            var result = await _userService.UpdateUser(id, user);
             if (result == null)
             {
                 return NotFound($"User with id {id} not found");
@@ -55,7 +55,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteUser(int id)
         {
-            var result = _userService.DeleteUser(id);
+            var result = await _userService.DeleteUser(id);
             if (result == null)
             {
                 return NotFound($"User with id {id} not found");
