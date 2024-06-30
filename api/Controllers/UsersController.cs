@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -11,24 +11,22 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private static List<User> users = new List<User>
+        public readonly IUserService _userService;
+        public UsersController (IUserService userService)
         {
-            new User
-            {
-            Id = 3, Name = "User 1", Email = "asd@gmail.com",Password = "123456",
-                CreatedAt = DateTime.Now,UpdatedAt = DateTime.Now,
-            },
-        };
+            _userService = userService;
+        }
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<ActionResult<List<User>>> GetUsers()
         {
-            // return Ok("GetUsers");
+            var users = await _userService.GetUsers();
             return Ok(users);
         }
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = users.FirstOrDefault(x => x.Id == id);
+            var user = await _userService.GetUser(id);
             if (user == null)
             {
                 return NotFound($"User with id {id} not found");
@@ -36,37 +34,33 @@ namespace api.Controllers
             return Ok(user);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<ActionResult<List<User>>> CreateUser([FromBody] User user)
         {
-            users.Add(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            var result = _userService.CreateUser(user);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        public async Task<ActionResult<List<User>>> UpdateUser(int id, [FromBody] User user)
         {
-            var existingUser = users.FirstOrDefault(x => x.Id == id);
-            if (existingUser == null)
+            var result = _userService.UpdateUser(id, user);
+            if (result == null)
             {
                 return NotFound($"User with id {id} not found");
             }
-            existingUser.Name = user.Name;
-            existingUser.Email = user.Email;
-            existingUser.Password = user.Password;
-            existingUser.UpdatedAt = DateTime.Now;
-            return NoContent();
+            return Ok(result);
+
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<ActionResult<bool>> DeleteUser(int id)
         {
-            var user = users.FirstOrDefault(x => x.Id == id);
-            if (user == null)
+            var result = _userService.DeleteUser(id);
+            if (result == null)
             {
                 return NotFound($"User with id {id} not found");
             }
-            users.Remove(user);
-            return Ok("sUer deleted successfully");
+            return Ok(result);
         }
 
     }
