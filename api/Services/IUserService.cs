@@ -9,8 +9,8 @@ namespace api.Services
     {
         Task<List<User>> GetUsers();
         Task<User> GetUser(int id);
-        Task<User> CreateUser(User user);
-        Task<User>? UpdateUser(int id, User user);
+        Task<User> CreateUser(UserDto user);
+        Task<User>? UpdateUser(int id, UserDto user);
         Task<bool>? DeleteUser(int id);
         
     }

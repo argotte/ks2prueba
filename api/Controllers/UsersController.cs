@@ -34,14 +34,14 @@ namespace api.Controllers
             return Ok(user);
         }
         [HttpPost]
-        public async Task<ActionResult<List<User>>> CreateUser([FromBody] User user)
+        public async Task<ActionResult<List<User>>> CreateUser([FromBody] UserDto user)
         {
             var result = await _userService.CreateUser(user);
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<List<User>>> UpdateUser(int id, [FromBody] User user)
+        public async Task<ActionResult<List<User>>> UpdateUser(int id, [FromBody] UserDto user)
         {
             var result = await _userService.UpdateUser(id, user);
             if (result == null)
