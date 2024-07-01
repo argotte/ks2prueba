@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using api.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -73,10 +68,9 @@ namespace api.Services
             {
                 return null;
             }
-
             existingUser.Name = userDto.Name;
             existingUser.Email = userDto.Email;
-            existingUser.Password = userDto.Password;
+            existingUser.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
             existingUser.UpdatedAt = DateTime.Now;
             await _context.SaveChangesAsync();
             return existingUser;
@@ -98,6 +92,15 @@ public async Task<User?> Login(string email, string password)
 
 public async Task<bool> Register(User user, string password)
 {
+    try
+    {
+        var mailAddress = new System.Net.Mail.MailAddress(user.Email);
+    }
+    catch (FormatException)
+    {
+        return false;
+    }
+
     if (await _context.Users.AnyAsync(u => u.Email == user.Email))
     {
         return false;

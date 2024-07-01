@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -87,7 +83,7 @@ namespace api.Controllers
 
                 if (!result)
                 {
-                    return BadRequest("Could not register user");
+                    return BadRequest("Could not register user. Invalid Email or already exists.");
                 }
 
                 var token = _userService.GenerateJwtToken(user);
