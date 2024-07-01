@@ -18,9 +18,9 @@ namespace api.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetUsers()
+        public async Task<ActionResult<List<User>>> GetUsers([FromQuery] int pageNumber=1, [FromQuery] int pageSize=10)
         {
-            var users = await _userService.GetUsers();
+            var users = await _userService.GetUsers(pageNumber, pageSize);
             return Ok(users);
         }
 
@@ -34,12 +34,12 @@ namespace api.Controllers
             }
             return Ok(user);
         }
-        [HttpPost]
-        public async Task<ActionResult<List<User>>> CreateUser([FromBody] UserDto user)
-        {
-            var result = await _userService.CreateUser(user);
-            return Ok(result);
-        }
+        // [HttpPost]
+        // public async Task<ActionResult<List<User>>> CreateUser([FromBody] UserDto user)
+        // {
+        //     var result = await _userService.CreateUser(user);
+        //     return Ok(result);
+        // }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<List<User>>> UpdateUser(int id, [FromBody] UserDto user)

@@ -20,21 +20,21 @@ namespace api.Services
         {
             _context = context;
         }
-        public async Task<User> CreateUser(UserDto userDto)
-        {
+        // public async Task<User> CreateUser(UserDto userDto)
+        // {
 
-            var user = new User
-            {
-                Name = userDto.Name,
-                Email = userDto.Email,
-                Password = userDto.Password,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            };
-            var createdUser = await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-            return createdUser.Entity;
-        }
+        //     var user = new User
+        //     {
+        //         Name = userDto.Name,
+        //         Email = userDto.Email,
+        //         Password = userDto.Password,
+        //         CreatedAt = DateTime.Now,
+        //         UpdatedAt = DateTime.Now
+        //     };
+        //     var createdUser = await _context.Users.AddAsync(user);
+        //     await _context.SaveChangesAsync();
+        //     return createdUser.Entity;
+        // }
 
         public async Task<bool>? DeleteUser(int id)
         {
@@ -57,9 +57,12 @@ namespace api.Services
                 return user;
             }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<User>> GetUsers(int pageNumber, int pageSize)
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
             return users;
         }
 
