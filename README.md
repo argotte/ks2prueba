@@ -24,6 +24,12 @@ En el Explorador de soluciones, haz clic con el botón derecho en la solución y
 
 Aclaración: Para simplificar la instalación y la revisión de este proyecto, decidí no utilizar variables de entorno para el connectionString ni para la firma del JSON Web Token. Sin embargo, quiero destacar que en un entorno de producción, la práctica recomendada sería almacenar estos valores sensibles como variables de entorno para mejorar la seguridad.
 
+4. Ejecuta los comandos para crear la base de datos y ejecutar las migraciones
+   Si usas Visual Studio Code:
+   `dotnet ef database update` 
+   Si usas Visual Studio:
+    entra a Herramientas -> Administrador de paquetes NuGet -> Consola del Administrador de Paquetes y luego ejecuta el comando Update-Database
+
 ## Uso
 
 Dependiendo del entorno de desarrollo que estés utilizando, los pasos para ejecutar la aplicación pueden variar:
