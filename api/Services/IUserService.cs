@@ -13,5 +13,8 @@ namespace api.Services
         Task<User>? UpdateUser(int id, UserDto user);
         Task<bool>? DeleteUser(int id);
         
+        Task<User?> Login(string email, string password);
+        Task<bool> Register(User user, string password);
+        string GenerateJwtToken(User user);
     }
 }
