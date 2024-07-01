@@ -14,29 +14,38 @@ Describe los pasos para instalar tu proyecto. Por ejemplo:
 
 1. Clona el repositorio
 
-2. Instala las dependencias: 
+2. Instala las dependencias:
+
 Si usas Visual Studio Code:
-`dotnet restore` 
+
+    `dotnet restore` 
+
 Si usas Visual Studio:
-En el Explorador de soluciones, haz clic con el botón derecho en la solución y selecciona "Restaurar paquetes NuGet". Esto instalará todas las dependencias especificadas en los archivos de proyecto de tu solución.
+
+   En el Explorador de soluciones, haz clic con el botón derecho en la solución y selecciona "Restaurar paquetes NuGet". Esto instalará todas las dependencias especificadas en los archivos de proyecto de tu solución.
 
 3. Revisa el connectionString en el archivo appsettings. Actualmente, está configurado para mi base de datos local, pero es posible que necesites ajustarlo para que coincida con tu configuración.
 
 Aclaración: Para simplificar la instalación y la revisión de este proyecto, decidí no utilizar variables de entorno para el connectionString ni para la firma del JSON Web Token. Sin embargo, quiero destacar que en un entorno de producción, la práctica recomendada sería almacenar estos valores sensibles como variables de entorno para mejorar la seguridad.
 
 4. Ejecuta los comandos para crear la base de datos y ejecutar las migraciones
-   Si usas Visual Studio Code:
+
+Si usas Visual Studio Code:
    `dotnet ef database update` 
-   Si usas Visual Studio:
-    entra a Herramientas -> Administrador de paquetes NuGet -> Consola del Administrador de Paquetes y luego ejecuta el comando Update-Database
+   
+Si usas Visual Studio:
+    Entra a Herramientas -> Administrador de paquetes NuGet -> Consola del Administrador de Paquetes y luego ejecuta el comando `Update-Database` 
 
 ## Uso
 
 Dependiendo del entorno de desarrollo que estés utilizando, los pasos para ejecutar la aplicación pueden variar:
 
-Si estás utilizando Visual Studio Code, ejecuta el comando:dotnet watch run en la terminal.
+Si estás utilizando Visual Studio Code, ejecuta el comando:`dotnet watch run`  en la terminal.
+
 Si estás utilizando Visual Studio, simplemente presiona el botón de ejecución.
+
 Una vez que la aplicación esté en ejecución, se abrirá el navegador con la interfaz de Swagger.
+
 
 Para empezar a interactuar con los endpoints protegidos, primero debes registrarte. Utiliza el endpoint /api/Users/RegisterJWT para crear un nuevo usuario. Una vez que hayas creado un usuario, puedes iniciar sesión utilizando el endpoint /api/Users/Login. Este endpoint te proporcionará un token que debes copiar y pegar en Swagger. Una vez que hayas proporcionado el token, estarás autorizado para interactuar con el resto de los endpoints.
 
